@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently --kill-others 'npm run backend' 'npm run frontend'",
+    "frontend": "cd frontend && npm start",
+    "backend": "cd backend && nodemon app.js",
+    "deploy": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
