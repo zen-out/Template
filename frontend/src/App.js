@@ -26,12 +26,16 @@ function AddTodoForm() {
 }
 
 function Todos() {
-  const todos = useStoreState((state) => state.things);
+  const todos = useStoreState(
+    (state) => state.things.things
+  );
+  const users = useStoreState((state) => state.users.users);
   console.log(todos);
+  console.log(users);
   return (
     <ul>
       {todos.map((todo) => (
-        <li>{todo.text}</li>
+        <li key={todo.id}>{todo.text}</li>
       ))}
     </ul>
   );

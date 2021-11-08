@@ -1,0 +1,39 @@
+{
+  "source": {
+    "include": [
+      "planning",
+      "backend",
+      "frontend",
+      "deploy"
+    ],
+    "includePattern": ".(jsx|js|ts|tsx)$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "node_modules/better-docs/typescript",
+
+    "node_modules/better-docs/component"
+  ],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true
+  },
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "opts": {
+    "recurse": true,
+    "verbose": true,
+    "template": "node_modules/clean-jsdoc-theme",
+    "destination": "./documentation/",
+    "theme_opts": {
+      "title": "lesley's dictionary",
+      "add_style_path": [
+        {
+          "href": "https://dl.dropboxusercontent.com/s/n0p3xipmay58eij/test.css"
+        }
+      ]
+    }
+  }
+}
