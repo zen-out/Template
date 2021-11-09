@@ -1,5 +1,5 @@
 import { action, thunk, computed } from "easy-peasy";
-import { removeItemAtIndex } from "./utils";
+import { removeItemAtIndex } from "../config/utils";
 
 export const UsersStore = {
   // initial state

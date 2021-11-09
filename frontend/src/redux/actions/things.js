@@ -1,5 +1,16 @@
-import { action, thunk, computed } from "easy-peasy";
-import { removeItemAtIndex } from "./utils";
+import produce from "immer";
+import {
+  action,
+  thunk,
+  computed,
+  effect,
+} from "easy-peasy";
+import {
+  removeItemAtIndex,
+  removeItemAtId,
+  replaceItemAtId,
+  getLargestId,
+} from "../config/utils";
 
 export const ThingsStore = {
   // initial state
@@ -47,6 +58,10 @@ export const ThingsStore = {
   }),
 
   postThing: action((state, payload) => {
+    let getLatestId = getLargestId(state.things) + 1;
+    console.log(payload);
+    payload.id = getLatestId;
+    console.log("updated with id", payload);
     state.things.push(payload);
   }),
 
@@ -84,10 +99,9 @@ export const ThingsStore = {
     actions.setLoading(false);
   }),
   deleteThing: action((state, payload) => {
-    state.todos = removeItemAtIndex(
-      state.todos,
-      state.todos.findIndex((item) => item.id === payload)
-    );
+    console.log("payload", payload.id);
+    console.log("original", state.things);
+
     // Delete the todo
   }),
   deleteThingThunk: thunk(async (actions, payload) => {
