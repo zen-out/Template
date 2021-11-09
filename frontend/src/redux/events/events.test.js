@@ -3,6 +3,10 @@ import { createStore } from "easy-peasy";
 import mockService from "./data.js";
 
 import {
+  weirdNewObject,
+  mergedWithWeird,
+  twoObjects,
+  afterMerged,
   initialState,
   newObject,
   getOne,
@@ -178,6 +182,34 @@ describe("events", () => {
       payload: false,
     });
   });
+  it("Flexible edits should merge and update original object", async () => {
+    await storeMocked
+      .getActions()
+      .editFlexibleThunk(weirdNewObject);
+    expect(storeMocked.getMockedActions()).toContainObject({
+      type: "@thunk.editFlexibleThunk(start)",
+      payload: weirdNewObject,
+    });
+    expect(storeMocked.getMockedActions()).toContainObject({
+      type: "@action.updateFlexible",
+      payload: {
+        original: getOne,
+        updated: weirdNewObject,
+      },
+    });
+    expect(storeMocked.getMockedActions()).toContainObject({
+      type: "@thunk.editFlexibleThunk(success)",
+      payload: mergedWithWeird,
+    });
+    expect(storeMocked.getMockedActions()).toContainObject({
+      type: "@action.setLoading",
+      payload: true,
+    });
+    expect(storeMocked.getMockedActions()).toContainObject({
+      type: "@action.setLoading",
+      payload: false,
+    });
+  });
   it("deleteThunk should change state", async () => {
     await storeMocked.getActions().deleteThunk(1);
     expect(storeMocked.getMockedActions()).toContainObject({
@@ -227,6 +259,17 @@ describe("events", () => {
   it("should add event", () => {
     store.getActions().add(newObject);
     expect(store.getState().events).toEqual(afterAdd);
+  });
+
+  it("update flexible", () => {
+    store.getActions().updateFlexible(twoObjects);
+    expect(store.getState().events).toContainObject(
+      mergedWithWeird
+    );
+    expect(store.getState().events).toContainObject(
+      initialState[1]
+    );
+    expect(store.getState().events.length).toBe(2);
   });
 
   it("should update", () => {

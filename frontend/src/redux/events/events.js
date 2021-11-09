@@ -3,6 +3,7 @@ import { getLargestId } from "../config/utils";
 import produce from "immer";
 import { initialState } from "./states";
 import mockService from "./data";
+import { mergeObjects } from "../config/utils";
 
 export const EventsStore = {
   // Store
@@ -47,10 +48,10 @@ export const EventsStore = {
     }
     actions.setLoading(false);
   }),
-  editThunk: thunk(async (actions, payload) => {
+  editThunk: thunk(async (actions, editedObject) => {
     actions.setLoading(true);
     try {
-      const res = await mockService.edit(payload);
+      const res = await mockService.edit(editedObject);
       console.log("response", res);
       actions.update(res);
     } catch (error) {
@@ -59,6 +60,32 @@ export const EventsStore = {
     }
     actions.setLoading(false);
   }),
+
+  editFlexibleThunk: thunk(
+    async (actions, editedObject) => {
+      actions.setLoading(true);
+      try {
+        const getOriginal = await mockService.getOne(
+          editedObject.id
+        );
+        const newObject = mergeObjects(
+          editedObject,
+          getOriginal
+        );
+        const res = await mockService.edit(newObject);
+        console.log("response", res);
+        let twoObjects = {
+          original: getOriginal,
+          updated: res,
+        };
+        actions.updateFlexible(twoObjects);
+      } catch (error) {
+        console.log("error: ", error);
+        actions.setError(error);
+      }
+      actions.setLoading(false);
+    }
+  ),
   deleteThunk: thunk(async (actions, id) => {
     actions.setLoading(true);
     try {
@@ -101,6 +128,26 @@ export const EventsStore = {
     state.events = produce(state.events, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === newObject.id
+      );
+      if (index !== -1) draft[index] = newObject;
+    });
+  }),
+  updateFlexible: action((state, twoObjects) => {
+    let original = twoObjects.original;
+    let updated = twoObjects.updated;
+
+    const newObject = mergeObjects(updated, original);
+    console.log(
+      original,
+      "original",
+      updated,
+      "updated",
+      "merged",
+      newObject
+    );
+    state.events = produce(state.events, (draft) => {
+      const index = draft.findIndex(
+        (todo) => todo.id === original.id
       );
       if (index !== -1) draft[index] = newObject;
     });

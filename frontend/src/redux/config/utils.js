@@ -1,3 +1,4 @@
+import _ from "lodash";
 import produce from "immer";
 export const replaceItemAtIndex = (
   arr,
@@ -70,3 +71,35 @@ export function getLargestId(arr) {
 }
 
 // console.log(getLargestId(array));
+
+export const original = {
+  id: 1,
+  name: "event1",
+  status: "going",
+};
+
+export const updated = {
+  id: 1,
+  status: "not going",
+  newCondition: "what",
+};
+export const merged = {
+  id: 1,
+  status: "not going",
+  newCondition: "what",
+  name: "event1",
+};
+
+function customizer(objValue, srcValue) {
+  return _.isUndefined(objValue) ? srcValue : objValue;
+}
+// update comes first
+export const mergeObjects = _.partialRight(
+  _.assignInWith,
+  customizer
+);
+// updated
+console.log(mergeObjects(updated, original));
+console.log(mergeObjects(original, updated));
+// => { 'a': 1, 'b': 2 }
+console.log();
