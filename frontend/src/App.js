@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Redux from "./pages/Redux";
+import MarkdownMain from "./pages/MarkdownMain";
 function AddTodoForm() {
   const { postThing } = useStoreActions(
     (actions) => actions.things
@@ -71,6 +72,7 @@ function App() {
   return (
     <div className="App">
       <Redux />
+      <MarkdownMain />
     </div>
   );
 }
