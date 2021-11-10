@@ -68,7 +68,8 @@ function getURL(url) {
     return result.data;
   });
 }
-
+const REDUX =
+  "https://raw.githubusercontent.com/lezzles11/Template/master/frontend/planning/reduxTest.md";
 const MarkdownMain = () => {
   const [isLoading, setLoading] = useState(true);
   const [kellan, setKellan] = useState("");
@@ -76,7 +77,7 @@ const MarkdownMain = () => {
   const [hygge, setHygge] = useState("");
   useEffect(() => {
     async function getData() {
-      await axios.get(KELLAN).then((result) => {
+      await axios.get(REDUX).then((result) => {
         // console.log(result.data);
         setKellan(result.data);
       });
@@ -101,11 +102,50 @@ const MarkdownMain = () => {
   }
   console.log(kellan);
   return (
-    <div className="markdown-body">
+    <div
+      className="container font2"
+      style={{ textAlign: "left" }}
+    >
       <ReactMarkdown
-        children={hygge}
+        children={optee}
         remarkPlugins={[remarkGfm, remarkToc]}
         components={{
+          p: ({ node, ...props }) => (
+            <p
+              style={{ color: "black", paddingTop: "1rem" }}
+              {...props}
+            />
+          ),
+          pre: ({ node, ...props }) => (
+            <span
+              style={{
+                textAlign: "left",
+                marginLeft: "1rem",
+              }}
+              {...props}
+            />
+          ),
+          span: ({ node, ...props }) => (
+            <span
+              style={{
+                textAlign: "left",
+                marginLeft: "1rem",
+              }}
+              {...props}
+            />
+          ),
+          h3: ({ node, ...props }) => (
+            <h3 style={{ marginTop: "3rem" }} {...props} />
+          ),
+          strong: ({ node, ...props }) => (
+            <h5
+              style={{
+                marginTop: "3rem",
+                fontWeight: "bold",
+              }}
+              {...props}
+            />
+          ),
           code({
             node,
             inline,
@@ -129,17 +169,19 @@ const MarkdownMain = () => {
                 {...props}
               />
             ) : (
-              <code className={className} {...props}>
-                {children}
-              </code>
+              <div>
+                <SyntaxHighlighter
+                  language="javascript"
+                  style={nightOwl}
+                  //   renderer={virtualizedRenderer()}
+                >
+                  {children}
+                </SyntaxHighlighter>
+              </div>
             );
           },
         }}
       />
-      <Markdown
-        source={hygge}
-        options={{ highlight, html: true, linkify: true }}
-      ></Markdown>
     </div>
   );
 };

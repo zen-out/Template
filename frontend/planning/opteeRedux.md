@@ -1,254 +1,217 @@
 Things to test for:
 
-- sign up and dispatches
-- sign up and dispatches
+##### User Stories
 
-**DECIDE ON THE DISPATCHES - what would make the most sense? I think using easy peasy**
+- Users will be able to signup
+- Users will be able to login
+- Users will be able to create a new event
+- Users will be able to edit an event
+- Users will be able to see the upcoming tasks that they have for the day
 
-- I think we should start with the hardest thing, which is user auth{" "}
-- Then I think we should think about using immer, because that's more used right - use whatever makes the most sense dude{" "}
+##### Finished Tasks
 
-{" "} Links [{" "} Tags Library](https://www.npmjs.com/package/react-tag-input) [{" "} Easy Peasy](https://devlinduldulao.pro/easy-peasy-in-a-nutshell-with-react-easy-peasy-code-sample/) [{" "} Super deep nesting](https://github.com/ctrlplusb/easy-peasy/issues/695) [{" "} Easy Peasy Dispatch](https://github.com/hayawata3626/easy-peasy-sample/blob/master/src/model.js) [tests](https://github.com/crissdev/reduxtagram-easy-peasy/blob/7166e542b0929b658cd32175b4a2e7d116466090/src/__tests__/comments-model.spec.ts) [easy peasy example](https://github.com/FabrizioFornari/SPM2020-BPU/blob/6794e4e98aff0cb939d4a503c36d26853de40961/frontend/src/redux/models/usersModel.js) tests tests tests
+- [x] Components
+- [ ] Redux Template
+- [ x] Redux Tests
+- [ x] Redux React Tests
+- [ ] API
+
+- I think we should start with the hardest thing, which is user auth
+- Then I think we should think about using immer, because that's more used right - use whatever makes the most sense dude
+
+##### Links
+
+- [Tags Library](https://www.npmjs.com/package/react-tag-input)
+- [Easy Peasy](https://devlinduldulao.pro/easy-peasy-in-a-nutshell-with-react-easy-peasy-code-sample/)
+- [Super deep nesting](https://github.com/ctrlplusb/easy-peasy/issues/695)
+- [ Easy Peasy Dispatch](https://github.com/hayawata3626/easy-peasy-sample/blob/master/src/model.js)
+- [tests](https://github.com/crissdev/reduxtagram-easy-peasy/blob/7166e542b0929b658cd32175b4a2e7d116466090/src/__tests__/comments-model.spec.ts)
+- [easy peasy example](https://github.com/FabrizioFornari/SPM2020-BPU/blob/6794e4e98aff0cb939d4a503c36d26853de40961/frontend/src/redux/models/usersModel.js) tests tests tests
 
 - **User (id, firstName, middleName, lastName, email, password, google_id, facebook_id, spotify_id, company, location, about, google_cal)**
 
-  - POST User (signup)
+##### Routes
 
-    - input firstName
-    - input lastName
-    - input email
-    - input password
-    - input termsAndServices (checkbox)
-    - button googleSignup
-    - button facebookSignup
-    - button createAccount
+###### User
 
-    /api/signup  
-     Terms and Services google google facebook create account
+- [ ] POST User (signup) /api/signup
 
-  - POST User (login)
+  - input firstName
+  - input lastName
+  - input email
+  - input password
+  - input termsAndServices (checkbox)
+  - button googleSignup
+  - button facebookSignup
+  - button createAccount
 
-    - input email
-    - input password
-    - input rememberMe (checkbox)
-    - button googleLogin
-    - button facebookLogin
-    - button login
+- [ ] POST User (login) /api/login
 
-    /api/signup  
-     {" "} Remember Me  
-    login google facebook
+  - input email
+  - input password
+  - input rememberMe (checkbox)
+  - button googleLogin
+  - button facebookLogin
+  - button login
 
-  - PUT Password
+- [ ] PUT Password /api/getPasswordLink
 
-    - input email
-    - button sendResetLink
+  - input email
+  - button sendResetLink
 
-    /api/getPasswordLink  
-     send reset link
+- [ ] PUT Password /api/changePassword
 
-  - PUT Password
+  - input newPassword
+  - button resetPassword
+  - reset password
 
-    - input newPassword
-    - button resetPassword
+- [ ] PUT Settings (put) /api/profile
 
-    /api/changePassword  
-     reset password
+  - input firstName
+  - input middleName
+  - input lastName
+  - input company
+  - input location
+  - input about
+  - input (dropdown) calendar
+  - button syncCalendar
+  - button saveChanges
+  - button discardChanges
 
-  - PUT Settings (put)
+- [ ] PUT Settings /api/settings
 
-    - input firstName
-    - input middleName
-    - input lastName
-    - input company
-    - input location
-    - input about
-    - input (dropdown) calendar
-    - button syncCalendar
-    - button saveChanges
-    - button discardChanges
+  - button changePassword
+  - radio allowNotifications
+  - radio allowCookies
+  - radio allowAds
+  - button deleteAccount
+  - button saveChanges
+  - button discardChanges
 
-    /api/updateuser  
-     sync google calendar sync apple calendar save changes discard changes
+- POST logout /api/logout
 
-  - PUT Settings
+  - button logout
 
-    - button changePassword
-    - radio allowNotifications
-    - radio allowCookies
-    - radio allowAds
-    - button deleteAccount
-    - button saveChanges
-    - button discardChanges
+###### Tags
 
-    /api/settings  
-    changePassword
+- [Tags](https://blog.logrocket.com/building-a-tag-input-field-component-for-react/)
 
-    allow notifications {" "} don't allow notifications
+###### Projects (id, name, purpose, startDate, deadline, priority, tagsArray, friendsArray, image)
 
-    allow cookies {" "} don't allow cookies
+- Get Ongoing Projects /api/currentProjects
 
-    allow ads {" "} don't allow ads
+  - progress (get all current tasks that are associated with this project, divide by completed)
+  - priority
 
-    save save cancel
+- Get Project Tasks /api/projects/:projectId/tasks
 
-  - POST logout
+  - deadline
+  - progress
+  - Task name, organized by date
 
-    - button logout
+- Get Current Project (for each page) /api/projects/:projectId
 
-    {" "}
-    /api/logout  
-    logout
+- Get User's Projects
 
-- [**Tags (id, name)**](https://blog.logrocket.com/building-a-tag-input-field-component-for-react/)
-- **Projects (id, name, purpose, startDate, deadline, priority, tagsArray, friendsArray, image)**
+  - getUsersProjects
 
-  - Get Ongoing Projects
+- Post Project (Modal) /api/projects
 
-    - progress (get all current tasks that are associated with this project, divide by completed)
-    - priority
+  - input name
+  - input purpose
+  - input startDate
+  - input deadline
+  - input (dropdown) priority
+  - input tags
+  - input friendEmailOne
+  - input friendEmailTwo
+  - button saveProject
+  - button cancel
 
-    {" "}
-    /api/currentProjects  
-    projects
+- [Get All Projects (filter)](https://codesandbox.io/s/fstoj?file=/src/AddProduct.js) /api/projects
 
-  - Get Project Tasks
+  - input projectFilter
+  - deadline
+  - priority
+  - tags
+  - id (link to the project page)
 
-    - deadline
-    - progress
-    - Task name, organized by date
+###### Tasks (id, index, name, completed, priority, duration, deadline, startDate, deadline, projectId, userId, tagsArray, notes, image){" "}\*\*
 
-    {" "}
-    /api/projects/:projectId/tasks  
-    get project tasks
+- Get Today's Tasks /api/users/:userId/tasks
 
-  - Get Current Project (for each page) 
-    /api/projects/:projectId  
-    get project getUsersProjects
-  - Post Project (Modal)
+  - name, completed
 
-    - input name
-    - input purpose
-    - input startDate
-    - input deadline
-    - input (dropdown) priority
-    - input tags
-    - input friendEmailOne
-    - input friendEmailTwo
-    - button saveProject
-    - button cancel
+- [Complete Task](https://codesandbox.io/s/jpdd2?file=/src/model.js) /api/tasks/:id
 
-    {" "}
-    POST /api/projects  
-     priority high medium low save cancel
+  - input checkbox
 
-  - [Get All Projects (filter)](https://codesandbox.io/s/fstoj?file=/src/AddProduct.js)
+- Post Task /api/tasks
 
-    - input projectFilter
-    - deadline
-    - priority
-    - tags
-    - id (link to the project page)
+  - input name
+  - input project (get all current projects)
+  - input priority
+  - input deadline
+  - input tags
+  - input notes
+  - input image
+  - button saveTask
+  - button cancel
 
-    /api/projects  
-     get all projects
+- Get Task to Time (Put Request - Edit Task) /api/tasks/:id
 
-- **Tasks (id, index, name, completed, priority, duration, deadline, startDate, deadline, projectId, userId, tagsArray, notes, image){" "}**
+  - get name, priority, project name, duration
+  - button beginTask
+  - button saveTime
 
-  - Get Today's Tasks
+- Get Tasks (Filter) /api/users/:id/tasks
 
-    - name, completed
+  - button completedTasks
+  - button currentTasks
 
-    /api/users/:userId/tasks  
-    get todays tasks getAllTasks
+- Organize Tasks - /api/tasks/:id
 
-  - [Complete Task](https://codesandbox.io/s/jpdd2?file=/src/model.js)
+  - drag and drop changes index
 
-    - input checkbox
+  /api/tasks  
+  reset
 
-    PUT /api/tasks/:id  
-     Done with task
+- Delete Task - /api/tasks/:id
 
-  - Post Task
+  - button deleteTask
 
-    - input name
-    - input project (get all current projects)
-    - input priority
-    - input deadline
-    - input tags
-    - input notes
-    - input image
-    - button saveTask
-    - button cancel
+- Edit Task - /api/tasks/:id
+  {" "} priority high priority high medium low saveTask cancel
 
-    /api/  
-     priority high priority high medium low saveTask cancel
+##### Event (id, name, date, time, link, guests, information, status (going,notgoing),tagsArray)\*\*
 
-  - Get Task to Time (Put Request - Edit Task)
+- Get Events /api/users/:id/events
 
-    - get name, priority, project name, duration
-    - button beginTask
-    - button saveTime
+  - getUsersEvents
 
-    /api/tasks/:id  
-     beginTask saveTime
+- Get event (for modal) /api/events/:id
 
-  - Get Tasks (Filter)
+  - getEvent
 
-    - button completedTasks
-    - button currentTasks
+- Post Event /api/events/
 
-    /api/tasks  
-    get completed tasks get current tasks
+  - input name
+  - input (dropdown) status (priority)
+  - input time
+  - input date
+  - input tags
+  - input link
+  - input guests
+  - input information
 
-  - Organize Tasks
+##### Feedback (id, rating, user_id)
 
-    - drag and drop changes index
+- stars 5 buttons
+  /api/feedback  
+  {" "} 1 star 2 star 3 star 4 star 5 star submit feedback
+- button submitFeedback
 
-    /api/tasks  
-    reset
-
-  - Delete Task
-
-    - button deleteTask
-
-    /api/tasks/:id  
-    delete task
-
-  - Edit Task
-    /api/tasks/:id  
-    {" "} priority high priority high medium low saveTask cancel
-
-- **Event (id, name, date, time, link, guests, information, status (going,notgoing),tagsArray)**
-
-  - Get Events
-    /api/users/:id/events  
-    get user events get user events
-  - Get event (for modal)
-    /api/events/:id  
-    get event
-  - Post Event
-
-    - input name
-    - input (dropdown) status (priority)
-    - input time
-    - input date
-    - input tags
-    - input link
-    - input guests
-    - input information
-
-    /api/events  
-    {" "} priority high medium low saveEvent cancel
-
-- **Feedback (id, rating, user_id)**
-
-  - stars 5 buttons
-    /api/feedback  
-    {" "} 1 star 2 star 3 star 4 star 5 star submit feedback
-  - button submitFeedback
-
-  /api/  
-   reset
+/api/  
+ reset
 
 # Just put all event handlers here and play here
