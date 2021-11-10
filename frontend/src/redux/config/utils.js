@@ -99,7 +99,7 @@ export const mergeObjects = _.partialRight(
   customizer
 );
 // updated
-console.log(mergeObjects(updated, original));
-console.log(mergeObjects(original, updated));
-// => { 'a': 1, 'b': 2 }
-console.log();
+// console.log(mergeObjects(updated, original));
+// console.log(mergeObjects(original, updated));
+// // => { 'a': 1, 'b': 2 }
+// console.log();
