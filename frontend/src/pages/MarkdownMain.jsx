@@ -5,7 +5,10 @@ import emoji from "remark-emoji";
 import "highlight.js/styles/github-gist.css";
 import axios from "redaxios";
 import "github-markdown-css";
+import SyntaxHighlighter from "react-syntax-highlighter";
+// import { dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
+import ReactMarkdown from "react-markdown";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkSlug from "remark-slug";
@@ -15,15 +18,22 @@ import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
 import rehypeReact from "rehype-react";
 import remarkHtml from "remark-html";
-function toHTML(string) {
-  const toHTML = unified()
-    .use(remarkParse)
-    .use(remarkHtml)
-    .process(string)
-    .then((file) => {
-      console.log(String(file));
-    });
-}
+import remarkGfm from "remark-gfm";
+import virtualizedRenderer from "react-syntax-highlighter-virtualized-renderer";
+import { nightOwl } from "../nightOwl";
+// virtualized night owl
+// atelier-lakeside-light
+// atelier-sulphurpool-light
+const HYGGE =
+  "https://raw.githubusercontent.com/lezzles11/Template/master/frontend/planning/hyggechats.md";
+const KELLAN =
+  "https://raw.githubusercontent.com/lezzles11/Template/master/frontend/planning/kellan.md";
+const OPTEE =
+  "https://raw.githubusercontent.com/lezzles11/Template/master/frontend/planning/opteeRedux.md";
+
+const htmlProcessor = unified()
+  .use(remarkParse)
+  .use(remarkHtml);
 
 const processor = unified()
   .use(remarkParse)
@@ -33,7 +43,6 @@ const processor = unified()
     repository: "rehypejs/rehype-react",
   })
   .use(remarkRehype)
-  .use(rehypeHighlight)
   .use(rehypeReact, { createElement: React.createElement });
 const highlight = (str, lang) => {
   if (lang && hljs.getLanguage(lang)) {
@@ -53,33 +62,82 @@ const highlight = (str, lang) => {
   return "";
 };
 
-const MarkdownMain = () => {
-  const [readMe, setReadMe] = useState("");
-  const [markDown, setMarkDown] = useState({});
-  useEffect(() => {
-    function getData() {
-      axios
-        .get(
-          "https://raw.githubusercontent.com/AndersonChoi/wedding-card/master/README.md"
-        )
-        .then((object) => {
-          console.log(object.data);
-          let processed = processor.processSync(
-            object.data
-          ).result;
+function getURL(url) {
+  axios.get(url).then((result) => {
+    console.log(result.data);
+    return result.data;
+  });
+}
 
-          console.log(typeof processed);
-          console.log(processed);
-          setMarkDown(processed);
-          setReadMe(object.data);
-        });
+const MarkdownMain = () => {
+  const [isLoading, setLoading] = useState(true);
+  const [kellan, setKellan] = useState("");
+  const [optee, setOptee] = useState("");
+  const [hygge, setHygge] = useState("");
+  useEffect(() => {
+    async function getData() {
+      await axios.get(KELLAN).then((result) => {
+        // console.log(result.data);
+        setKellan(result.data);
+      });
+      await axios.get(OPTEE).then((result) => {
+        setOptee(result.data);
+      });
+      await axios.get(HYGGE).then((result) => {
+        setHygge(result.data);
+      });
     }
     getData();
+    setLoading(false);
+    return () => {
+      setKellan("");
+      setOptee("");
+      setHygge("");
+    };
   }, []);
+
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+  console.log(kellan);
   return (
     <div className="markdown-body">
+      <ReactMarkdown
+        children={hygge}
+        remarkPlugins={[remarkGfm, remarkToc]}
+        components={{
+          code({
+            node,
+            inline,
+            className,
+            children,
+            ...props
+          }) {
+            const match = /language-(\w+)/.exec(
+              className || ""
+            );
+            return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(
+                  /\n$/,
+                  ""
+                )}
+                style={nightOwl}
+                language={match[1]}
+                // renderer={virtualizedRenderer()}
+                PreTag="div"
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      />
       <Markdown
-        source={readMe}
+        source={hygge}
         options={{ highlight, html: true, linkify: true }}
       ></Markdown>
     </div>
