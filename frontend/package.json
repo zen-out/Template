@@ -13,10 +13,12 @@
     "@types/react-dom": "^17.0.10",
     "axios": "^0.24.0",
     "easy-peasy": "^5.0.4",
-    "expo": "^43.0.1",
+    "expo": "^1.0.0",
     "github-markdown-css": "^5.0.0",
     "highlight.js": "^11.3.1",
     "immer": "^9.0.6",
+    "lodash": "^4.17.21",
+    "lodash-id": "^0.14.1",
     "query-extensions": "^0.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -24,14 +26,14 @@
     "react-redux": "^7.2.6",
     "react-remarkable": "^1.1.3",
     "react-router": "^5.2.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^3.4.4",
     "react-syntax-highlighter": "^15.4.4",
     "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "redaxios": "^0.4.1",
     "redux": "^4.1.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.1.3",
-    "redux-starter-kit": "^2.0.0",
+    "redux-starter-kit": "^0.0.2",
     "regenerator-runtime": "^0.13.9",
     "rehype-highlight": "^5.0.0",
     "rehype-react": "^7.0.3",
@@ -75,8 +77,7 @@
     ]
   },
   "devDependencies": {
-    "awesome-typescript-loader": "^5.2.1",
-    "jest": "^26.6.0",
-    "typescript": "^4.4.4"
+    "awesome-typescript-loader": "^3.1.3",
+    "jest": "^27.3.1"
   }
 }

@@ -25,10 +25,13 @@
     "express-routes-catalogue": "^1.1.0",
     "express-session": "^1.17.2",
     "jsdoc": "^3.6.7",
+    "lodash": "^4.17.21",
+    "lodash-id": "^0.14.1",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",
     "staticify": "^5.0.0",
-    "ts-jsdoc": "^3.2.2"
+    "ts-jsdoc": "^3.2.2",
+    "underscore": "^1.13.1"
   }
 }

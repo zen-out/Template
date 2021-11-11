@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
-
+//  const eventsStore = useStoreState((state) => state.events);
+//  const current = useStoreState(
+//    (state) => state.events.current
+//  );
+//  const deleteThunk = useStoreActions(
+//    (actions) => actions.events.deleteThunk
+//  );
 function CombineChanges({
   object,
   editFlexibleThunk,

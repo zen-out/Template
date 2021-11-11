@@ -1,5 +1,4 @@
 import { action, thunk, computed } from "easy-peasy";
-import { getLargestId } from "../config/utils";
 import produce from "immer";
 import { initialState } from "./states";
 import mockService from "./data";

@@ -1,8 +1,3 @@
-export const name = 1;
+const ThingRouter = require("./things/routes");
 
-// exporting express
-
-// exporting classes
-
-// exporting functions
-// exporting variables
+module.exports = { ThingRouter };

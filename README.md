@@ -1,3 +1,5 @@
+# Template
+
 The purpose of this repository is to create a template that makes it easier to build, deploy and manage projects.
 
 ## Planning
@@ -16,12 +18,14 @@ The purpose of this repository is to create a template that makes it easier to b
     when posting, return id, and then append it wherever the data goes, that way, it'll be easier to
 
     - playground file
-    - index
+    - Using lodash to manipulate data
+    - - index
 
   - utils
 
 ## Frontend
 
+- [ ] Things to explore: [lodash-id](https://github.com/typicode/lodash-id)
 - [ ]
 
 ## Backend
