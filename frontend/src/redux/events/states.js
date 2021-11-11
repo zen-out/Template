@@ -1,15 +1,23 @@
 // corresponds to api
 // import { screen } from "query-extensions";
-export const initialState = [
+import _ from "lodash";
+function customizer(objValue, srcValue) {
+  return _.isUndefined(objValue) ? srcValue : objValue;
+}
+// update comes first
+export const mergeObjects = _.partialRight(
+  _.assignInWith,
+  customizer
+);
+
+export const INIT_EVENTS = [
   { id: 1, name: "event1", status: "going" },
   { id: 2, name: "event2", status: "not going" },
 ];
 
-export const getOne = {
-  id: 1,
-  name: "event1",
-  status: "going",
-};
+export const getOne = INIT_EVENTS[0];
+console.log(getOne);
+
 export const toggleAction = { id: 1, status: "not going" };
 export const afterToggle = [
   { id: 1, name: "event1", status: "not going" },
@@ -21,7 +29,7 @@ export const newObject = {
   name: "event3",
   status: "not going",
 };
-export const afterAdd = [...initialState, newObject];
+export const afterAdd = [...INIT_EVENTS, newObject];
 
 export const editedObject = {
   id: 2,
@@ -71,8 +79,3 @@ export const afterMerged = [
     status: "going",
   },
 ];
-//
-// import { screen } from 'query-extensions';
-// const table = screen.getBySelector("tbody");
-
-function createUI(array) {}

@@ -1,13 +1,12 @@
 import { EventsStore } from "./events";
 import { createStore } from "easy-peasy";
-import mockService from "./data.js";
-
+import mockService from "./server.js";
 import {
   weirdNewObject,
   mergedWithWeird,
   twoObjects,
   afterMerged,
-  initialState,
+  INIT_EVENTS,
   newObject,
   getOne,
   toggleAction,
@@ -56,7 +55,7 @@ describe("events", () => {
   let store;
   beforeEach(() => {
     mockFunctions = {
-      getAll: jest.fn(() => Promise.resolve(initialState)),
+      getAll: jest.fn(() => Promise.resolve(INIT_EVENTS)),
       getOne: jest.fn(() => Promise.resolve(getOne)),
       post: jest.fn(() => Promise.resolve(newObject)),
       edit: jest.fn(() => Promise.resolve(editedObject)),
@@ -68,7 +67,7 @@ describe("events", () => {
       injections: { mockService: mockFunctions },
     });
     store = createStore(EventsStore, {
-      //   initialState: initialState,
+      //   INIT_EVENTS: INIT_EVENTS,
       injections: { mockService: mockFunctions },
     });
   });
@@ -78,7 +77,7 @@ describe("events", () => {
 
   //     // act
   //     expect(store.getState().events).toEqual(
-  //       initialState
+  //       INIT_EVENTS
   //     );
   //   });
   it("thunk should get all", async () => {
@@ -95,14 +94,14 @@ describe("events", () => {
       payload: false,
     });
     expect(storeMocked.getMockedActions()).toContainObject({
-      payload: initialState,
+      payload: INIT_EVENTS,
     });
     expect(storeMocked.getMockedActions()).toContainObject({
       type: "@action.setEvents",
     });
 
     expect(storeMocked.getState().events).toEqual(
-      initialState
+      INIT_EVENTS
     );
   });
   it("getOneThunk should get one", async () => {
@@ -267,7 +266,7 @@ describe("events", () => {
       mergedWithWeird
     );
     expect(store.getState().events).toContainObject(
-      initialState[1]
+      INIT_EVENTS[1]
     );
     expect(store.getState().events.length).toBe(2);
   });
@@ -281,9 +280,9 @@ describe("events", () => {
   });
 
   it("should set events", () => {
-    store.getActions().setEvents(initialState);
+    store.getActions().setEvents(INIT_EVENTS);
 
-    expect(store.getState().events).toEqual(initialState);
+    expect(store.getState().events).toEqual(INIT_EVENTS);
   });
   it("should change condition", () => {
     // arrange

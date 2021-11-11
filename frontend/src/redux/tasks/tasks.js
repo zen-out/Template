@@ -1,21 +1,43 @@
-import { action, thunk } from "easy-peasy";
-import produce from "immer";
-import { INIT_EVENTS } from "./states";
-import mockService from "./server";
+import { action, thunk, computed } from "easy-peasy";
 import { mergeObjects } from "../utils";
+import produce from "immer";
+import mockService from "./server";
+import { INIT_TASKS } from "./states";
+import _ from "lodash";
 
-export const EventsStore = {
-  // Store
-  events: INIT_EVENTS,
-  current: {},
+const getTasks = (userId, state) => {
+  let tasks = _.filter(state, {
+    user_id: userId,
+  });
+  console.log("got tasks");
+  return tasks;
+};
+export const TasksStore = {
+  tasks: INIT_TASKS,
+  current: INIT_TASKS[0],
   isLoading: false,
+  getUsersTasks: computed((state) => {
+    return (id) =>
+      state.tasks.find((todo) => todo.id === id);
+  }),
+  displayRepos: computed(
+    [
+      (state) => state.tasks,
+      (state, storeState) => storeState.users.current.id,
+    ],
+    (items, id) => {
+      return _.filter(items, {
+        user_id: id,
+      });
+    }
+  ),
   // Subroutines to load from API
   getAllThunk: thunk(async (actions) => {
     actions.setLoading(true);
     try {
       let getAll = await mockService.getAll();
-      console.log("events", getAll);
-      actions.setEvents(getAll);
+      console.log("tasks", getAll);
+      actions.setTasks(getAll);
     } catch (error) {
       console.log("error: ", error);
       actions.setError(error);
@@ -35,10 +57,10 @@ export const EventsStore = {
     }
     actions.setLoading(false);
   }),
-  postThunk: thunk(async (actions, event) => {
+  postThunk: thunk(async (actions, task) => {
     actions.setLoading(true);
     try {
-      const res = await mockService.post(event);
+      const res = await mockService.post(task);
       console.log("response", res);
       actions.add(res);
     } catch (error) {
@@ -97,13 +119,13 @@ export const EventsStore = {
     actions.setLoading(false);
   }),
   toggleStatusThunk: thunk(async (actions, payload) => {
-    let eventId = payload.id;
+    let taskId = payload.id;
     let status = payload.status;
-    console.log("event id", eventId, status);
+    console.log("task id", taskId, status);
     actions.setLoading(true);
     try {
-      const res = await mockService.toggle(eventId, status);
-      actions.setEvents(res);
+      const res = await mockService.toggle(taskId, status);
+      actions.setTasks(res);
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
@@ -116,15 +138,15 @@ export const EventsStore = {
     state.current = current;
   }),
   // Actions
-  setEvents: action((state, events) => {
-    state.events = events;
+  setTasks: action((state, tasks) => {
+    state.tasks = tasks;
   }),
-  add: action((state, event) => {
-    // event.id = getLargestId(state.things) + 1;
-    state.events = [...state.events, event];
+  add: action((state, task) => {
+    // task.id = getLargestId(state.things) + 1;
+    state.tasks = [...state.tasks, task];
   }),
   update: action((state, newObject) => {
-    state.events = produce(state.events, (draft) => {
+    state.tasks = produce(state.tasks, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === newObject.id
       );
@@ -144,7 +166,7 @@ export const EventsStore = {
       "merged",
       newObject
     );
-    state.events = produce(state.events, (draft) => {
+    state.tasks = produce(state.tasks, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === original.id
       );
@@ -152,7 +174,7 @@ export const EventsStore = {
     });
   }),
   toggle: action((state, payload) => {
-    state.events = produce(state.events, (draft) => {
+    state.tasks = produce(state.tasks, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === payload.id
       );
@@ -164,8 +186,8 @@ export const EventsStore = {
   }),
   remove: action((state, id) => {
     console.log("remove button");
-    state.events = state.events.filter(
-      (event) => event.id !== id
+    state.tasks = state.tasks.filter(
+      (task) => task.id !== id
     );
   }),
   setLoading: action((state, payload) => {
@@ -174,19 +196,4 @@ export const EventsStore = {
   setError: action((state, payload) => {
     state.error = payload;
   }),
-  // not good because it essentially deletes everything
-  //   filter: action((state, searchValue) => {
-  //     let lowerCased = searchValue.toLowerCase();
-  //     const updatedTodosArray = produce(
-  //       state.events,
-  //       (draft) => {
-  //         return draft.filter(
-  //           (item) =>
-  //             item.title.toLowerCase().includes(lowerCased)
-  //           //   lowerCased.includes(item.title.toLowerCase())
-  //         );
-  //       }
-  //     );
-  //     state.events = updatedTodosArray;
-  //   }),
 };
