@@ -8,9 +8,13 @@ import _ from "lodash";
 export const BugsStore = {
   bugs: INIT_BUGS,
   current: INIT_BUGS[3],
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
     error: false,
-    loading: false,
+
     message: "",
     visible: false,
   },
@@ -106,7 +110,11 @@ export const BugsStore = {
       actions.setBugs(getAll);
     } catch (error) {
       //   console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -119,7 +127,11 @@ export const BugsStore = {
       actions.setCurrent(get);
     } catch (error) {
       //   console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -131,7 +143,11 @@ export const BugsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -143,7 +159,11 @@ export const BugsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -168,7 +188,11 @@ export const BugsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setMessage(error);
+        actions.setToast({
+          error: true,
+          message: error,
+          visible: true,
+        });
       }
       actions.setLoading(false);
     }
@@ -180,7 +204,11 @@ export const BugsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -195,7 +223,11 @@ export const BugsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),

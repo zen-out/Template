@@ -7,11 +7,12 @@ import CircularLoader from "./Loaders/CircularLoader";
 import TimerComponent from "./Timer/TimerComponent";
 
 import ActiveTimer from "./Timer/ActiveTimer";
-
+import ToastComponent from "./Toast/ToastComponent";
 import AllTimers from "./Timer/AllTimers";
 
 export {
   TimerComponent,
+  ToastComponent,
   ActiveTimer,
   CardComponent,
   TableComponent,

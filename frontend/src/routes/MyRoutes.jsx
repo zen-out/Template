@@ -5,8 +5,12 @@ import PrivateRoute from "./PrivateRoute";
 import { ThemeProvider } from "@mui/styles";
 import React, { useState, useEffect } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { DrawerComponent } from "../components";
+import {
+  DrawerComponent,
+  ToastComponent,
+} from "../components";
 import Playground from "../components/Playground";
+
 export default function MyRoutes() {
   const authState = useStoreState(
     (state) => state.users.isAuthenticated
@@ -14,8 +18,8 @@ export default function MyRoutes() {
   return (
     <div>
       <DrawerComponent />
-
       <div className="container">
+        <ToastComponent />
         <Playground />
         <Outlet />
       </div>

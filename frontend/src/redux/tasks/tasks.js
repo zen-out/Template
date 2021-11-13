@@ -13,9 +13,13 @@ const getUsersData = (userId, arr) => {
 export const TasksStore = {
   tasks: INIT_TASKS,
   current: INIT_TASKS[3],
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
     error: false,
-    loading: false,
+
     message: "",
     visible: false,
   },
@@ -75,7 +79,11 @@ export const TasksStore = {
       actions.setTasks(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -88,7 +96,11 @@ export const TasksStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -100,7 +112,11 @@ export const TasksStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -112,7 +128,11 @@ export const TasksStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -137,7 +157,11 @@ export const TasksStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setMessage(error);
+        actions.setToast({
+          error: true,
+          message: error,
+          visible: true,
+        });
       }
       actions.setLoading(false);
     }
@@ -149,7 +173,11 @@ export const TasksStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -164,7 +192,11 @@ export const TasksStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),

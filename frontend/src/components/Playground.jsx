@@ -4,10 +4,10 @@ import {
   CircularLoader,
   ActiveTimer,
   TimerComponent,
+  ToastComponent,
 } from "./index";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -109,15 +109,15 @@ function TimerHook({ expiryTimestamp, ogTime }) {
     onExpire: () => console.warn("onExpire called"),
   });
   //   console.log("original time", originalTime);
-  console.log("timestamp", expiryTimestamp);
+  //   console.log("timestamp", expiryTimestamp);
   let getSeconds = parseInt(ogTime);
-  console.log(getSeconds);
+  //   console.log(getSeconds);
   let passedTime = minutes * 60;
   let passedSeconds = seconds;
-  console.log(passedSeconds);
+  //   console.log(passedSeconds);
   let totalPassed = passedTime + passedSeconds;
   let percentage = 100 - (totalPassed / ogTime) * 100;
-  console.log(percentage);
+  //   console.log(percentage);
   return (
     <div style={{ textAlign: "center" }}>
       <h1>react-timer-hook </h1>
@@ -128,6 +128,7 @@ function TimerHook({ expiryTimestamp, ogTime }) {
         minutes={minutes}
         seconds={seconds}
       />
+
       <div style={{ fontSize: "100px" }}>
         <span>{days}</span>:<span>{hours}</span>:
         <span>{minutes}</span>:<span>{seconds}</span>
@@ -152,7 +153,7 @@ function TimerHook({ expiryTimestamp, ogTime }) {
 function RealTimer({ minutes }) {
   const time = new Date();
   let getTime = minutes * 60;
-  console.log("get time");
+  //   console.log("get time");
   time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
   return (
     <div>
@@ -161,13 +162,6 @@ function RealTimer({ minutes }) {
   );
 }
 const Playground = () => {
-  const userState = useStoreState(
-    (state) => state.users.message
-  );
-
-  useEffect(() => {
-    return toast.error(userState);
-  }, [userState]);
   return (
     <div>
       <h1>Timer omg need a break</h1>
@@ -206,6 +200,7 @@ const Playground = () => {
       <TableComponent />
       <CardComponent />
       <TimerComponent />
+      {/* <ToastComponent /> */}
       {/* <ActiveTimer minutes={1} /> */}
     </div>
   );

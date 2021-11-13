@@ -8,9 +8,13 @@ export const SettingsStore = {
   // Store
   settings: INIT_SETTINGS,
   current: {},
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
     error: false,
-    loading: false,
+
     message: "",
     visible: false,
   },
@@ -26,7 +30,11 @@ export const SettingsStore = {
       actions.setSettings(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -39,7 +47,11 @@ export const SettingsStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -51,7 +63,11 @@ export const SettingsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -63,7 +79,11 @@ export const SettingsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -88,7 +108,11 @@ export const SettingsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setMessage(error);
+        actions.setToast({
+          error: true,
+          message: error,
+          visible: true,
+        });
       }
       actions.setLoading(false);
     }
@@ -100,7 +124,11 @@ export const SettingsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -118,7 +146,11 @@ export const SettingsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),

@@ -9,9 +9,12 @@ export const EventsStore = {
   // Store
   events: INIT_EVENTS,
   current: {},
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
     error: false,
-    loading: false,
     message: "",
     visible: false,
   },
@@ -27,7 +30,11 @@ export const EventsStore = {
       actions.setEvents(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -40,7 +47,11 @@ export const EventsStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -52,7 +63,11 @@ export const EventsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -64,7 +79,11 @@ export const EventsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -89,7 +108,11 @@ export const EventsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setMessage(error);
+        actions.setToast({
+          error: true,
+          message: error,
+          visible: true,
+        });
       }
       actions.setLoading(false);
     }
@@ -101,7 +124,11 @@ export const EventsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -116,7 +143,11 @@ export const EventsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),

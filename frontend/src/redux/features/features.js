@@ -8,11 +8,14 @@ import _ from "lodash";
 export const FeaturesStore = {
   features: INIT_FEATURES,
   current: INIT_FEATURES[3],
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
-    error: false,
-    loading: false,
-    message: "",
-    visible: false,
+    error: true,
+    message: "hello",
+    visible: true,
   },
   setToast: action((state, payload) => {
     state.toast = payload;
@@ -49,7 +52,11 @@ export const FeaturesStore = {
       actions.setFeatures(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -62,7 +69,11 @@ export const FeaturesStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -74,7 +85,11 @@ export const FeaturesStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -86,7 +101,11 @@ export const FeaturesStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -111,7 +130,11 @@ export const FeaturesStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setMessage(error);
+        actions.setToast({
+          error: true,
+          message: error,
+          visible: true,
+        });
       }
       actions.setLoading(false);
     }
@@ -123,7 +146,11 @@ export const FeaturesStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -141,7 +168,11 @@ export const FeaturesStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),

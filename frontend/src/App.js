@@ -3,6 +3,8 @@ import "./App.css";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { ThemeProvider } from "@material-ui/styles";
 import {
   BrowserRouter,
@@ -26,6 +28,7 @@ import {
 import {
   CardComponent,
   TableComponent,
+  ToastComponent,
   DrawerComponent,
 } from "./components";
 function ActualApp() {
@@ -42,6 +45,9 @@ function App() {
   return (
     <div className="App">
       <StoreProvider store={store}>
+        {/* Same as */}
+        {/* <ToastContainer /> */}
+
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ActualApp />}>

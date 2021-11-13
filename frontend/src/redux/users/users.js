@@ -8,9 +8,13 @@ export const UsersStore = {
   users: INIT_USERS,
   current: INIT_USERS[3],
   isAuthenticated: false,
+  isLoading: false,
+  setLoading: action((state, payload) => {
+    state.isLoading = payload;
+  }),
   toast: {
     error: false,
-    loading: false,
+
     message: "",
     visible: false,
   },
@@ -38,7 +42,11 @@ export const UsersStore = {
       // go to home page
     } catch (error) {
       //   console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
@@ -49,7 +57,11 @@ export const UsersStore = {
       actions.setUser(INIT_USERS[0]);
     } catch (error) {
       //   console.log("error: ", error);
-      actions.setMessage(error);
+      actions.setToast({
+        error: true,
+        message: error,
+        visible: true,
+      });
     }
     actions.setLoading(false);
   }),
