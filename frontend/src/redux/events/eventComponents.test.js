@@ -9,7 +9,7 @@ import {
 import { UI } from "../global/testUI";
 import { screen } from "query-extensions";
 import { EventsStore } from "./events";
-import Redux from "../../pages/reduxExample/FirstDraftRedux";
+import Redux from "../../pages/ReduxPage/FirstDraftRedux";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import {

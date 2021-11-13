@@ -6,7 +6,7 @@ import mockService from "./server";
 export const UsersStore = {
   users: INIT_USERS,
   current: INIT_USERS[0],
-  isAuthenticated: false,
+  isAuthenticated: true,
   loginThunk: thunk(async (actions) => {
     actions.setLoading(true);
     try {

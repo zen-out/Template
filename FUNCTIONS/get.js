@@ -157,6 +157,68 @@ class Manipulate {
   }
 }
 
+let projectId = 2;
+let featuresArr = [
+  { id: 1, user_id: 1, project_id: 1 },
+  { id: 2, user_id: 1, project_id: 2 },
+];
+let tasksArr = [
+  { id: 1, user_id: 1, feature_id: 1 },
+  { id: 2, user_id: 1, feature_id: 2 },
+  { id: 3, user_id: 1, feature_id: 2 },
+  { id: 4, user_id: 1, feature_id: 2 },
+];
+let bugsArr =
+ [
+  { id: 1, user_id: 1, task_id: 1 },
+  { id: 2, user_id: 1, task_id: 2 },
+];
+
+let features = _.filter(featuresArr, {
+  project_id: projectId,
+});
+console.log(features);
+let featureIds = _.map(features, "id");
+console.log("features", features);
+let taskIds = [];
+for (let i of featureIds) {
+  let tasks = _.filter(tasksArr, {
+    feature_id: i,
+  });
+  console.log("able to get each tasks", tasks);
+  console.log(tasks);
+  let ids = _.map(tasks, "id");
+  taskIds.push(ids);
+}
+taskIds = _.flattenDeep(taskIds);
+console.log("get all task ids", taskIds);
+
+let finalBugs = bugsArr.map(function (item) {
+  return taskIds.includes(item.id) ? item : [];
+  // return
+});
+console.log(finalBugs);
+let bugs = [];
+var arrayOfObjects = [
+  {
+    id: 1,
+    name: "bob",
+  },
+  {
+    id: 2,
+    name: "sue",
+  },
+];
+
+var keyValuePairs = { 1: "admin", 2: "user" };
+var result = arrayOfObjects.map(function (o) {
+  return keyValuePairs[o.id]
+    ? Object.assign({}, o, { title: keyValuePairs[o.id] })
+    : o;
+});
+
+console.log(result);
+
 let doThis = new Manipulate(db);
 console.log(doThis);
 doThis.getAllUsersProjects(1);
