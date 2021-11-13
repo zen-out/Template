@@ -66,7 +66,7 @@ const ToastComponent = () => {
       bugToast.error === true &&
       bugToast.visible === true
     ) {
-      toast.error(bugToast.message);
+      toast.error(`👺  ${bugToast.message}`);
       bugAction(resetToast);
     }
   }, [bugToast.error]);
@@ -76,7 +76,7 @@ const ToastComponent = () => {
       eventToast.error === true &&
       eventToast.visible === true
     ) {
-      toast.error(eventToast.message);
+      toast.error(`👺  ${eventToast.message}`);
       eventAction(resetToast);
     }
   }, [eventToast.error]);
@@ -86,7 +86,7 @@ const ToastComponent = () => {
       taskToast.error === true &&
       taskToast.visible === true
     ) {
-      toast.error(taskToast.message);
+      toast.error(`👺  ${taskToast.message}`);
       taskAction(resetToast);
     }
   }, [taskToast.error]);
@@ -96,7 +96,7 @@ const ToastComponent = () => {
       userToast.error === true &&
       userToast.visible === true
     ) {
-      toast.error(userToast.message);
+      toast.error(`👺  ${userToast.message}`);
       userAction(resetToast);
     }
   }, [userToast.error]);
@@ -106,7 +106,7 @@ const ToastComponent = () => {
       projectToast.error === true &&
       projectToast.visible === true
     ) {
-      toast.error(projectToast.message);
+      toast.error(`👺  ${projectToast.message}`);
       projectAction(resetToast);
     }
   }, [projectToast.error]);
@@ -116,7 +116,7 @@ const ToastComponent = () => {
       settingToast.error === true &&
       settingToast.visible === true
     ) {
-      toast.error(settingToast.message);
+      toast.error(`👺  ${settingToast.message}`);
       settingAction(resetToast);
     }
   }, [settingToast.error]);
@@ -126,7 +126,7 @@ const ToastComponent = () => {
       featureToast.error === true &&
       featureToast.visible === true
     ) {
-      toast.error(featureToast.message);
+      toast.error(`👺  ${featureToast.message}`);
       featureAction(resetToast);
     }
   }, [featureToast.error]);

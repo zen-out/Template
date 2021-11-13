@@ -4,6 +4,7 @@ import {
   CircularLoader,
   ActiveTimer,
   TimerComponent,
+  Library,
   ToastComponent,
 } from "./index";
 import { ToastContainer, toast } from "react-toastify";
@@ -161,10 +162,15 @@ function RealTimer({ minutes }) {
     </div>
   );
 }
+
 const Playground = () => {
   return (
     <div>
       <h1>Timer omg need a break</h1>
+      pure css: https://codepen.io/finnhvman/pen/bmNdNr
+      <br />
+      library
+      <Library />
       <ListItem
         secondaryAction={
           <Box>
