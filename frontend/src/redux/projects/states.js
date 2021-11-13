@@ -15,7 +15,7 @@ export const INIT_PROJECTS = [
   },
   {
     id: 2,
-    user_id: 1,
+    user_id: 2,
     done: false,
     image_url:
       "https://mdbootstrap.com/img/Photos/Others/images/49.jpg",
@@ -47,7 +47,7 @@ export const INIT_PROJECTS = [
   },
   {
     id: 4,
-    user_id: 1,
+    user_id: 4,
     done: true,
     image_url:
       "https://mdbootstrap.com/img/Photos/Others/images/47.jpg",
@@ -79,7 +79,7 @@ export const INIT_PROJECTS = [
   },
   {
     id: 6,
-    user_id: 1,
+    user_id: 2,
     done: true,
     image_url:
       "https://mdbootstrap.com/img/Photos/Others/images/34.jpg",

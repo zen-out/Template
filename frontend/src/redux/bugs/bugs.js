@@ -3,21 +3,110 @@ import { mergeObjects } from "../utils/functions";
 import produce from "immer";
 import { INIT_BUGS } from "./states";
 import mockService from "./server";
+import _ from "lodash";
 
 export const BugsStore = {
   bugs: INIT_BUGS,
-  current: {},
-  isLoading: false,
+  current: INIT_BUGS[3],
+  toast: {
+    error: false,
+    loading: false,
+    message: "",
+    visible: false,
+  },
+  setToast: action((state, payload) => {
+    state.toast = payload;
+  }),
+  getUsersBugs: computed(
+    [
+      (state) => state.bugs,
+      (state, storeState) => storeState.users.current.id,
+    ],
+    (items, id) => {
+      return _.filter(items, {
+        user_id: id,
+      });
+    }
+  ),
+  getProjectsBugs: computed(
+    [
+      (state) => state.bugs,
+      (state, storeState) => storeState.tasks.tasks,
+      (state, storeState) => storeState.features.features,
+      (state, storeState) => storeState.projects.current.id,
+    ],
+    (bugsArr, tasksArr, featuresArr, projectId) => {
+      let features = _.filter(featuresArr, {
+        project_id: projectId,
+      });
+      let featureIds = _.map(features, "id");
+      //   console.log("features", features);
+      let taskIds = [];
+      for (let i of featureIds) {
+        let tasks = _.filter(tasksArr, {
+          feature_id: i,
+        });
+        // console.log("able to get each tasks", tasks);
+        // console.log(tasks);
+        let ids = _.map(tasks, "id");
+        // console.log(tasks);
+        taskIds.push(ids);
+      }
+      taskIds = _.flattenDeep(taskIds);
+      //   console.log("get all task ids", taskIds);
+      let finalBugs = bugsArr.map(function (item) {
+        let task_id = item.task_id;
+        return taskIds.includes(task_id) ? item : [];
+      });
+      finalBugs = _.flattenDeep(finalBugs);
+      //   console.log("final nugs", finalBugs);
+      return finalBugs;
+    }
+  ),
+  getFeaturesBugs: computed(
+    [
+      (state) => state.bugs,
+      (state, storeState) => storeState.tasks.tasks,
+      (state, storeState) => storeState.features.current.id,
+    ],
+    (bugs, tasks, featureId) => {
+      //   console.log(bugs, tasks, featureId);
+      let taskArr = _.filter(tasks, {
+        feature_id: featureId,
+      });
+      //   console.log("tasks with this feature", taskArr);
+      let ids = _.map(taskArr, "id");
+      //   console.log("all ids", ids);
+      let finalBugs = bugs.map(function (item) {
+        let task_id = item.task_id;
+        return ids.includes(task_id) ? item : [];
+      });
+      finalBugs = _.flattenDeep(finalBugs);
+      return finalBugs;
+    }
+  ),
+  getTasksBugs: computed(
+    [
+      (state) => state.bugs,
+      (state, storeState) => storeState.tasks.current.id,
+    ],
+    (items, id) => {
+      return _.filter(items, {
+        task_id: id,
+      });
+    }
+  ),
+
   // Subroutines to load from API
   getAllThunk: thunk(async (actions) => {
     actions.setLoading(true);
     try {
       let getAll = await mockService.getAll();
-      console.log("bugs", getAll);
+      //   console.log("bugs", getAll);
       actions.setBugs(getAll);
     } catch (error) {
-      console.log("error: ", error);
-      actions.setError(error);
+      //   console.log("error: ", error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -26,11 +115,11 @@ export const BugsStore = {
     actions.setLoading(true);
     try {
       const get = await mockService.getOne(id);
-      console.log(";got from data", get);
+      //   console.log(";got from data", get);
       actions.setCurrent(get);
     } catch (error) {
-      console.log("error: ", error);
-      actions.setError(error);
+      //   console.log("error: ", error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -42,7 +131,7 @@ export const BugsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -54,7 +143,7 @@ export const BugsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -79,7 +168,7 @@ export const BugsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setError(error);
+        actions.setMessage(error);
       }
       actions.setLoading(false);
     }
@@ -91,7 +180,7 @@ export const BugsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -106,7 +195,7 @@ export const BugsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -164,11 +253,5 @@ export const BugsStore = {
   remove: action((state, id) => {
     console.log("remove button");
     state.bugs = state.bugs.filter((bug) => bug.id !== id);
-  }),
-  setLoading: action((state, payload) => {
-    state.loading = payload;
-  }),
-  setError: action((state, payload) => {
-    state.error = payload;
   }),
 };

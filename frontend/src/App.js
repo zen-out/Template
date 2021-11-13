@@ -29,6 +29,7 @@ import {
   DrawerComponent,
 } from "./components";
 function ActualApp() {
+  // add error to every redux
   return (
     <div>
       <MyRoutes />

@@ -1,7 +1,6 @@
 export const INIT_USERS = [
   {
     id: 1,
-    name: "Lesley",
     email: "lesleyc@bu.edu",
     password: "password",
     hash: "hash",
@@ -11,7 +10,6 @@ export const INIT_USERS = [
   },
   {
     id: 2,
-    name: "Ryan",
     email: "ryan@bu.edu",
     password: "password",
     hash: "hash",
@@ -21,7 +19,16 @@ export const INIT_USERS = [
   },
   {
     id: 3,
-    name: "Robert",
+    email: "robert@bu.edu",
+    password: "password",
+    hash: "hash1",
+    facebook_id: "facebookid1",
+    google_id: "googleid1",
+    spotify_id: "spotifyid1",
+  },
+  {
+    id: 4,
+    name: "edge case",
     email: "robert@bu.edu",
     password: "password",
     hash: "hash1",

@@ -16,7 +16,7 @@ export const INIT_EVENTS = [
 ];
 
 export const getOne = INIT_EVENTS[0];
-console.log(getOne);
+// console.log(getOne);
 
 export const toggleAction = { id: 1, status: "not going" };
 export const afterToggle = [

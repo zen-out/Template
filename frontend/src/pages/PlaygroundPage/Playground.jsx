@@ -1,17 +1,7 @@
-import {
-  CardComponent,
-  TableComponent,
-} from "../../components";
-
 import React from "react";
 
 const Playground = () => {
-  return (
-    <div>
-      <TableComponent />
-      <CardComponent />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Playground;

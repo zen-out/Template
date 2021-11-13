@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const ToastComponent = () => {
+const ToastComponent = ({ message }) => {
   const toast = useStoreState((state) => state.toast);
-  const toggle = useStoreActions(
-    (actions) => actions.toggleToast
-  );
+
   const toggleToast = () => {
     let visible = store.visible;
     toggle(!visible);
   };
   return (
-    <div>
-      <h5>{store.message}</h5>
-      <button onClick={toggleToast}>Toggle</button>
-    </div>
+    <ToastContainer
+      position={toast.POSITION.BOTTOM_LEFT}
+    ></ToastContainer>
   );
 };
 

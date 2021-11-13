@@ -4,7 +4,7 @@ import { EventsStore } from "./events/events";
 import { ProjectsStore } from "./projects/projects";
 import { BugsStore } from "./bugs/bugs";
 import { FeaturesStore } from "./features/features";
-import { ToastStore } from "./toast/toast";
+import { SettingsStore } from "./settings/settings";
 import { Compute } from "./compute/compute";
 import { TasksStore } from "./tasks/tasks";
 import { trackActionsMiddleware } from "./utils/middleware";
@@ -15,7 +15,7 @@ const logger = createLogger({
   collapsed: true,
 });
 const model = {
-  toast: ToastStore,
+  settings: SettingsStore,
   events: EventsStore,
   users: UsersStore,
   projects: ProjectsStore,

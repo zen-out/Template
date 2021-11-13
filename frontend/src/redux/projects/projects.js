@@ -3,11 +3,31 @@ import { mergeObjects } from "../utils";
 import produce from "immer";
 import mockService from "./server";
 import { INIT_PROJECTS } from "./states";
+import _ from "lodash";
 
 export const ProjectsStore = {
   projects: INIT_PROJECTS,
-  current: {},
-  isLoading: false,
+  current: INIT_PROJECTS[3],
+  toast: {
+    error: false,
+    loading: false,
+    message: "",
+    visible: false,
+  },
+  setToast: action((state, payload) => {
+    state.toast = payload;
+  }),
+  getUsersProjects: computed(
+    [
+      (state) => state.projects,
+      (state, storeState) => storeState.users.current.id,
+    ],
+    (items, id) => {
+      return _.filter(items, {
+        user_id: id,
+      });
+    }
+  ),
   // Subroutines to load from API
   getAllThunk: thunk(async (actions) => {
     actions.setLoading(true);
@@ -17,7 +37,7 @@ export const ProjectsStore = {
       actions.setProjects(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -30,7 +50,7 @@ export const ProjectsStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -42,7 +62,7 @@ export const ProjectsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -54,7 +74,7 @@ export const ProjectsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -79,7 +99,7 @@ export const ProjectsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setError(error);
+        actions.setMessage(error);
       }
       actions.setLoading(false);
     }
@@ -91,7 +111,7 @@ export const ProjectsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -109,7 +129,7 @@ export const ProjectsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -169,11 +189,5 @@ export const ProjectsStore = {
     state.projects = state.projects.filter(
       (project) => project.id !== id
     );
-  }),
-  setLoading: action((state, payload) => {
-    state.loading = payload;
-  }),
-  setError: action((state, payload) => {
-    state.error = payload;
   }),
 };

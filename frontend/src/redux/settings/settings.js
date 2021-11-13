@@ -1,13 +1,13 @@
 import { action, thunk, computed } from "easy-peasy";
 import { mergeObjects } from "../utils";
 import produce from "immer";
-import mockService from "./server";
-import { INIT_FEATURES } from "./states";
 import _ from "lodash";
-
-export const FeaturesStore = {
-  features: INIT_FEATURES,
-  current: INIT_FEATURES[3],
+import { INIT_SETTINGS } from "./states";
+import mockService from "./server";
+export const SettingsStore = {
+  // Store
+  settings: INIT_SETTINGS,
+  current: {},
   toast: {
     error: false,
     loading: false,
@@ -17,36 +17,13 @@ export const FeaturesStore = {
   setToast: action((state, payload) => {
     state.toast = payload;
   }),
-  getUsersFeatures: computed(
-    [
-      (state) => state.features,
-      (state, storeState) => storeState.users.current.id,
-    ],
-    (items, id) => {
-      return _.filter(items, {
-        user_id: id,
-      });
-    }
-  ),
-  // cannot be accessed based on action, but can be accessed on accessing a specific page
-  getProjectsFeatures: computed(
-    [
-      (state) => state.features,
-      (state, storeState) => storeState.projects.current.id,
-    ],
-    (items, id) => {
-      return _.filter(items, {
-        project_id: id,
-      });
-    }
-  ),
   // Subroutines to load from API
   getAllThunk: thunk(async (actions) => {
     actions.setLoading(true);
     try {
       let getAll = await mockService.getAll();
-      console.log("features", getAll);
-      actions.setFeatures(getAll);
+      console.log("settings", getAll);
+      actions.setSettings(getAll);
     } catch (error) {
       console.log("error: ", error);
       actions.setMessage(error);
@@ -66,10 +43,10 @@ export const FeaturesStore = {
     }
     actions.setLoading(false);
   }),
-  postThunk: thunk(async (actions, feature) => {
+  postThunk: thunk(async (actions, setting) => {
     actions.setLoading(true);
     try {
-      const res = await mockService.post(feature);
+      const res = await mockService.post(setting);
       console.log("response", res);
       actions.add(res);
     } catch (error) {
@@ -128,16 +105,16 @@ export const FeaturesStore = {
     actions.setLoading(false);
   }),
   toggleStatusThunk: thunk(async (actions, payload) => {
-    let featureId = payload.id;
+    let settingId = payload.id;
     let status = payload.status;
-    console.log("feature id", featureId, status);
+    console.log("setting id", settingId, status);
     actions.setLoading(true);
     try {
       const res = await mockService.toggle(
-        featureId,
+        settingId,
         status
       );
-      actions.setFeatures(res);
+      actions.setSettings(res);
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
@@ -150,15 +127,15 @@ export const FeaturesStore = {
     state.current = current;
   }),
   // Actions
-  setFeatures: action((state, features) => {
-    state.features = features;
+  setSettings: action((state, settings) => {
+    state.settings = settings;
   }),
-  add: action((state, feature) => {
-    // feature.id = getLargestId(state.things) + 1;
-    state.features = [...state.features, feature];
+  add: action((state, setting) => {
+    // setting.id = getLargestId(state.things) + 1;
+    state.settings = [...state.settings, setting];
   }),
   update: action((state, newObject) => {
-    state.features = produce(state.features, (draft) => {
+    state.settings = produce(state.settings, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === newObject.id
       );
@@ -178,7 +155,7 @@ export const FeaturesStore = {
       "merged",
       newObject
     );
-    state.features = produce(state.features, (draft) => {
+    state.settings = produce(state.settings, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === original.id
       );
@@ -186,7 +163,7 @@ export const FeaturesStore = {
     });
   }),
   toggle: action((state, payload) => {
-    state.features = produce(state.features, (draft) => {
+    state.settings = produce(state.settings, (draft) => {
       const index = draft.findIndex(
         (todo) => todo.id === payload.id
       );
@@ -198,8 +175,23 @@ export const FeaturesStore = {
   }),
   remove: action((state, id) => {
     console.log("remove button");
-    state.features = state.features.filter(
-      (feature) => feature.id !== id
+    state.settings = state.settings.filter(
+      (setting) => setting.id !== id
     );
   }),
+  // not good because it essentially deletes everything
+  //   filter: action((state, searchValue) => {
+  //     let lowerCased = searchValue.toLowerCase();
+  //     const updatedTodosArray = produce(
+  //       state.settings,
+  //       (draft) => {
+  //         return draft.filter(
+  //           (item) =>
+  //             item.title.toLowerCase().includes(lowerCased)
+  //           //   lowerCased.includes(item.title.toLowerCase())
+  //         );
+  //       }
+  //     );
+  //     state.settings = updatedTodosArray;
+  //   }),
 };

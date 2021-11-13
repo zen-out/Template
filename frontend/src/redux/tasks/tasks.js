@@ -5,22 +5,24 @@ import mockService from "./server";
 import { INIT_TASKS } from "./states";
 import _ from "lodash";
 
-const getTasks = (userId, state) => {
-  let tasks = _.filter(state, {
+const getUsersData = (userId, arr) => {
+  return _.filter(arr, {
     user_id: userId,
   });
-  console.log("got tasks");
-  return tasks;
 };
 export const TasksStore = {
   tasks: INIT_TASKS,
-  current: INIT_TASKS[0],
-  isLoading: false,
-  getUsersTasks: computed((state) => {
-    return (id) =>
-      state.tasks.find((todo) => todo.id === id);
+  current: INIT_TASKS[3],
+  toast: {
+    error: false,
+    loading: false,
+    message: "",
+    visible: false,
+  },
+  setToast: action((state, payload) => {
+    state.toast = payload;
   }),
-  displayRepos: computed(
+  getUsersTasks: computed(
     [
       (state) => state.tasks,
       (state, storeState) => storeState.users.current.id,
@@ -28,6 +30,39 @@ export const TasksStore = {
     (items, id) => {
       return _.filter(items, {
         user_id: id,
+      });
+    }
+  ),
+  getProjectsTasks: computed(
+    [
+      (state) => state.tasks,
+      (state, storeState) => storeState.features.features,
+      (state, storeState) => storeState.projects.current.id,
+    ],
+    (tasks, features, projectId) => {
+      //   console.log(tasks, tasks, projectId);
+      let featuresArr = _.filter(features, {
+        project_id: projectId,
+      });
+      //   console.log("tasks with this feature", taskArr);
+      let ids = _.map(featuresArr, "id");
+      //   console.log("all ids", ids);
+      let final = tasks.map(function (item) {
+        let feature_id = item.feature_id;
+        return ids.includes(feature_id) ? item : [];
+      });
+      final = _.flattenDeep(final);
+      return final;
+    }
+  ),
+  getFeaturesTasks: computed(
+    [
+      (state) => state.tasks,
+      (state, storeState) => storeState.features.current.id,
+    ],
+    (items, id) => {
+      return _.filter(items, {
+        feature_id: id,
       });
     }
   ),
@@ -40,7 +75,7 @@ export const TasksStore = {
       actions.setTasks(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -53,7 +88,7 @@ export const TasksStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -65,7 +100,7 @@ export const TasksStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -77,7 +112,7 @@ export const TasksStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -102,7 +137,7 @@ export const TasksStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setError(error);
+        actions.setMessage(error);
       }
       actions.setLoading(false);
     }
@@ -114,7 +149,7 @@ export const TasksStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -129,7 +164,7 @@ export const TasksStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -189,11 +224,5 @@ export const TasksStore = {
     state.tasks = state.tasks.filter(
       (task) => task.id !== id
     );
-  }),
-  setLoading: action((state, payload) => {
-    state.loading = payload;
-  }),
-  setError: action((state, payload) => {
-    state.error = payload;
   }),
 };

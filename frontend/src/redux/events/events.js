@@ -3,12 +3,21 @@ import produce from "immer";
 import { INIT_EVENTS } from "./states";
 import mockService from "./server";
 import { mergeObjects } from "../utils";
+import _ from "lodash";
 
 export const EventsStore = {
   // Store
   events: INIT_EVENTS,
   current: {},
-  isLoading: false,
+  toast: {
+    error: false,
+    loading: false,
+    message: "",
+    visible: false,
+  },
+  setToast: action((state, payload) => {
+    state.toast = payload;
+  }),
   // Subroutines to load from API
   getAllThunk: thunk(async (actions) => {
     actions.setLoading(true);
@@ -18,7 +27,7 @@ export const EventsStore = {
       actions.setEvents(getAll);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -31,7 +40,7 @@ export const EventsStore = {
       actions.setCurrent(get);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -43,7 +52,7 @@ export const EventsStore = {
       actions.add(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -55,7 +64,7 @@ export const EventsStore = {
       actions.update(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -80,7 +89,7 @@ export const EventsStore = {
         actions.updateFlexible(twoObjects);
       } catch (error) {
         console.log("error: ", error);
-        actions.setError(error);
+        actions.setMessage(error);
       }
       actions.setLoading(false);
     }
@@ -92,7 +101,7 @@ export const EventsStore = {
       actions.remove(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -107,7 +116,7 @@ export const EventsStore = {
       //   actions.toggle(res);
     } catch (error) {
       console.log("error: ", error);
-      actions.setError(error);
+      actions.setMessage(error);
     }
     actions.setLoading(false);
   }),
@@ -168,12 +177,7 @@ export const EventsStore = {
       (event) => event.id !== id
     );
   }),
-  setLoading: action((state, payload) => {
-    state.loading = payload;
-  }),
-  setError: action((state, payload) => {
-    state.error = payload;
-  }),
+
   // not good because it essentially deletes everything
   //   filter: action((state, searchValue) => {
   //     let lowerCased = searchValue.toLowerCase();
