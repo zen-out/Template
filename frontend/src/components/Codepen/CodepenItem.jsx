@@ -1,5 +1,29 @@
 import React from "react";
+import CodeSandbox from "./CodeSandbox";
+import Codepen from "./Codepen";
+export default function CodepenItem({ object, link }) {
+  return (
+    <div className="App">
+      <h2>{object.title}</h2>
+      <h4>{object.subtitle}</h4>
+      <h5>{object.component}</h5>
 
+      <h5>Reference? {object.reference}</h5>
+      <h5>Simple? {object.simple}</h5>
+      <h5>Spark Joy? {object.sparkJoy}</h5>
+
+      {link.toLowerCase().includes("codesandbox") ? (
+        <div>
+          <CodeSandbox link={link} />
+        </div>
+      ) : (
+        <div>
+          <Codepen link={link} />
+        </div>
+      )}
+    </div>
+  );
+}
 function ToExplore({
   name,
   link,
@@ -33,7 +57,7 @@ function ToExplore({
     </li>
   );
 }
-export default function CodepenList() {
+function ExploreList() {
   return (
     <div>
       <ToExplore

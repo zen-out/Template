@@ -1,166 +1,200 @@
-import React from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import { Codepen } from "../index";
-function Gallery() {
-  return (
-    <ImageList sx={{ width: 500, height: 450 }}>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <Codepen />
+import { Routes, Route } from "react-router-dom";
+import codepens from "../Codepen/List";
+import { CodepenItem } from "../index";
+import { debounce, filter } from "lodash";
+import {
+  hasPlace,
+  getUnique,
+  filterForCondition,
+  joyComponents,
+  getEachPage,
+  buildLibrary,
+} from "./functions";
 
-          {/* <Codepen hash="JyxeVP" user="shettypuneeth" />; */}
-          <ImageListItemBar
-            title={item.title}
-            subtitle={<span>by: {item.author}</span>}
-            position="below"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  );
-}
-
-const itemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-    author: "@bkristastucchio",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-    author: "@rollelflex_graphy726",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-    author: "@helloimnik",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-    author: "@nolanissac",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-    author: "@hjrc33",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-    author: "@arwinneil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-    author: "@tjdragotta",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-    author: "@katie_wasserman",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-    author: "@silverdalex",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-    author: "@shelleypauls",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-    author: "@peterlaster",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-    author: "@southside_customs",
-  },
-];
-
-export default function Library() {
-  const codepen = {
-    height: "300px",
-    boxSizing: "borderBox",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "2px solid",
-    margin: "1em 0",
-    padding: "1em",
-  };
+export function FilterList({ pens }) {
+  const [query, setQuery] = useState("");
+  let filteredPens = pens;
+  if (query !== "") {
+    filteredPens = pens.filter((name) => {
+      console.log(name.component.toLowerCase());
+      return (
+        name.component ===
+        "button".toLowerCase().includes("button")
+      );
+    });
+  }
+  console.log("type of code pen", typeof pens);
   return (
     <div>
-      <h1>Library of Components</h1>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <a href="#intro">Intro</a>
-            </li>
-            <li>
-              <a href="#dev">Developer Mode</a>
-              <ul>
-                <li>
-                  <a href="#dev-edit-html">Edit HTML</a>
-                </li>
-                <li>
-                  <a href="#dev-element-classes">
-                    Element Classes
-                  </a>
-                </li>
-                <li>
-                  <a href="#dev-slide-classes">
-                    Slide Classes
-                  </a>
-                </li>
-                <li>
-                  <a href="#dev-export-html">Export HTML</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#css">CSS Editor</a>
-              <ul>
-                <li>
-                  <a href="#css-fonts">Custom Fonts</a>
-                </li>
-                <li>
-                  <a href="#css-developer-mode">
-                    Developer Mode
-                  </a>
-                </li>
-                <li>
-                  <a href="#css-examples">Examples</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-        <Codepen
-          link="https://codepen.io/oliviale/pen/xxboXzo"
-          title="hi"
-          subtitle="subtitle"
-        />
+      {filteredPens.map((name) => (
+        <div key={name.link}>
+          {name.title}
+          {name.component}
+        </div>
+      ))}
+    </div>
+  );
+}
+let getComponents = filterForCondition(
+  codepens,
+  "component"
+);
 
-        <article>
-          <section>
-            <h2>Progress Nav</h2>
-            <a href="#dev">Developer Mode</a>.
-          </section>
-          <section></section>
-          <section>
-            <a href="#dev">developer mode</a>
-          </section>
-        </article>
+// const MapCodepens = (codepens) => (
+//   <div>
+//     {codepens.map((codepen) => (
+//       <div className="codepen" key={codepen.link}>
+//         {codepen.sparkJoy && codepen.simple ? (
+//           <div>
+//             <a href={codepen.link}>
+//               {" "}
+//               <h3>{codepen.title} </h3>
+//             </a>
+//             <h3>{codepen.component}</h3>
+//           </div>
+//         ) : (
+//           <div>
+//             <p>
+//               {codepen.title}
+//               {codepen.component}
+//             </p>
+//           </div>
+//         )}
+//         {codepen.title}
+//         {codepen.component}
+//         <h5>{codepen.where}</h5>
+//         {codepen.sparkJoy}
+//         {/* <Codepen
+//             title={codepen.title}
+//             link={codepen.link}
+//             subtitle={codepen.subtitle}
+//           /> */}
+//       </div>
+//     ))}
+//   </div>
+// );
+
+function GetLayout() {
+  return <div></div>;
+}
+
+const GetNavItems = ({ items }) => {
+  let count = items.length;
+  if (items) {
+    return (
+      <div>
+        <h4>{count}</h4>
+        <h1>Nav Items</h1>
+        {items.map((item) => {
+          <div>1</div>;
+        })}
       </div>
+    );
+  } else {
+    return <div>no</div>;
+  }
+};
+
+const Array = ({ arr }) => {
+  return <MapCodepens codepens={arr} />;
+};
+export default function Library() {
+  console.log(codepens.filter((item) => item.component));
+  const items = () =>
+    codepens
+      .filter((item) => {
+        return item.component
+          .toLowerCase()
+          .includes("button");
+      })
+      .map((item, index) => {
+        return (
+          <div key={item.link}>
+            <CodepenItem object={item} link={item.link} />{" "}
+          </div>
+        );
+      });
+  const joy = () =>
+    codepens
+      .filter((item) => {
+        console.log(item.sparkJoy == true);
+        return item.sparkJoy == true;
+      })
+      .map((item, index) => {
+        return (
+          <CodepenItem
+            key={index}
+            object={item}
+            link={item.link}
+          />
+        );
+      });
+
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  const getAllComponentsNames = () => {
+    return codepens
+      .map((item) => item.component)
+      .filter(onlyUnique)
+      .map((item, index) => {
+        return (
+          <div key={index}>
+            <h3>{item}</h3>
+            {getComponents(item)}
+          </div>
+        );
+      });
+  };
+  const getPages = (page) => {
+    return codepens
+      .filter((item) => {
+        return item.where === page;
+      })
+      .map((item) => {
+        return (
+          <div key={item.link}>
+            <CodepenItem object={item} link={item.link} />{" "}
+          </div>
+        );
+      });
+  };
+  const getComponents = (component) =>
+    codepens
+      .filter((item) => {
+        // console.log("component", item.component == page);
+        // console.log(item.component === page);
+        return item.component === component;
+      })
+      .map((item, index) => {
+        return (
+          <div key={item.link}>
+            <CodepenItem object={item} link={item.link} />{" "}
+          </div>
+        );
+      });
+
+  //   console.log("items", items);
+  //   console.log("joy", joy.length);
+  //   let joy = joyComponents(codepens);
+  //   const getJoy = () => joyComponents(codepens);
+  //   console.log(getJoy);
+  return (
+    <div>
+      <h2>Get Happy</h2>
+      {getAllComponentsNames()}
+
+      {getComponents("Loader")}
+      {getPages("All")}
     </div>
   );
 }
