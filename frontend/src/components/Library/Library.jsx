@@ -3,12 +3,8 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import ImageListItemBar from "@mui/material/ImageListItemBar";
-import { Routes, Route } from "react-router-dom";
 import codepens from "../Codepen/List";
-import { CodepenItem } from "../index";
+import { CodepenItem, ButtonComponent } from "../index";
 import { debounce, filter } from "lodash";
 import {
   hasPlace,
@@ -18,7 +14,7 @@ import {
   getEachPage,
   buildLibrary,
 } from "./functions";
-
+import LibraryRoutes from "./LibraryRoutes";
 export function FilterList({ pens }) {
   const [query, setQuery] = useState("");
   let filteredPens = pens;
@@ -27,7 +23,9 @@ export function FilterList({ pens }) {
       console.log(name.component.toLowerCase());
       return (
         name.component ===
-        "button".toLowerCase().includes("button")
+        "ButtonComponent"
+          .toLowerCase()
+          .includes("ButtonComponent")
       );
     });
   }
@@ -106,14 +104,139 @@ const GetNavItems = ({ items }) => {
 const Array = ({ arr }) => {
   return <MapCodepens codepens={arr} />;
 };
+
+const GetPages = (page) => {
+  return codepens
+    .filter((item) => {
+      return item.where === page;
+    })
+    .map((item) => {
+      return (
+        <div key={item.link}>
+          <CodepenItem object={item} link={item.link} />{" "}
+        </div>
+      );
+    });
+};
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
+const GetPageAfterClicking = ({ item }) => {
+  const [show, setShow] = useState(false);
+  const clickHandler = () => {
+    setShow(!show);
+  };
+  const GetPages = (page) => {
+    return codepens
+      .filter((item) => {
+        return item.where === page;
+      })
+      .map((item) => {
+        return (
+          <div key={item.link}>
+            <CodepenItem object={item} link={item.link} />{" "}
+          </div>
+        );
+      });
+  };
+  console.log(GetPages(item));
+  return (
+    <div>
+      <ButtonComponent
+        onClick={clickHandler}
+        label={item}
+      />
+      <div>
+        {show ? <div>{GetPages(item)}</div> : <div></div>}
+      </div>
+    </div>
+  );
+};
+
+const GetComponentsAfterClicking = ({ item }) => {
+  const [show, setShow] = useState(false);
+  const clickHandler = () => {
+    setShow(!show);
+  };
+
+  const GetComponents = (component) =>
+    codepens
+      .filter((item) => {
+        // console.log("component", item.component == page);
+        // console.log(item.component === page);
+        return item.component === component;
+      })
+      .map((item, index) => {
+        return (
+          <div key={item.link}>
+            <CodepenItem object={item} link={item.link} />{" "}
+          </div>
+        );
+      });
+  return (
+    <div>
+      <ButtonComponent
+        onClick={clickHandler}
+        label={item}
+      />
+      <div>
+        {show ? (
+          <div>{GetComponents(item)}</div>
+        ) : (
+          <div></div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GetPageRouter = () => {
+  return codepens
+    .map((item) => item.where)
+    .filter(onlyUnique)
+    .map((item, index) => {
+      return (
+        <div key={item}>
+          <GetPageAfterClicking item={item} />
+        </div>
+      );
+    });
+};
+
+const GetComponentRouter = () => {
+  return codepens
+    .map((item) => item.component)
+    .filter(onlyUnique)
+    .sort()
+    .map((item, index) => {
+      return (
+        <div key={item}>
+          <GetComponentsAfterClicking item={item} />
+        </div>
+      );
+    });
+};
+
+const GetPageNav = () => {
+  return codepens
+    .map((item) => item.where)
+    .filter(onlyUnique)
+    .map((item, index) => {
+      return <Link to={item}>{item}</Link>;
+    });
+};
 export default function Library() {
+  const [click, setClick] = useState("");
+  const clickHandler = () => {};
   console.log(codepens.filter((item) => item.component));
   const items = () =>
     codepens
       .filter((item) => {
         return item.component
           .toLowerCase()
-          .includes("button");
+          .includes("ButtonComponent");
       })
       .map((item, index) => {
         return (
@@ -138,50 +261,29 @@ export default function Library() {
         );
       });
 
-  function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
   const getAllComponentsNames = () => {
     return codepens
       .map((item) => item.component)
+      .filter(onlyUnique);
+  };
+  let components = codepens
+    .map((item) => item.component)
+    .filter(onlyUnique);
+  console.log("components", components);
+
+  const getAllPageNames = () => {
+    return codepens
+      .map((item) => item.where)
       .filter(onlyUnique)
       .map((item, index) => {
         return (
           <div key={index}>
             <h3>{item}</h3>
-            {getComponents(item)}
+            {getPages(item)}
           </div>
         );
       });
   };
-  const getPages = (page) => {
-    return codepens
-      .filter((item) => {
-        return item.where === page;
-      })
-      .map((item) => {
-        return (
-          <div key={item.link}>
-            <CodepenItem object={item} link={item.link} />{" "}
-          </div>
-        );
-      });
-  };
-  const getComponents = (component) =>
-    codepens
-      .filter((item) => {
-        // console.log("component", item.component == page);
-        // console.log(item.component === page);
-        return item.component === component;
-      })
-      .map((item, index) => {
-        return (
-          <div key={item.link}>
-            <CodepenItem object={item} link={item.link} />{" "}
-          </div>
-        );
-      });
 
   //   console.log("items", items);
   //   console.log("joy", joy.length);
@@ -191,10 +293,25 @@ export default function Library() {
   return (
     <div>
       <h2>Get Happy</h2>
+      {/* <Routes>
+        <GetPageRouter />
+      </Routes> */}
+      <div className="row">
+        <div className="col">
+          <GetPageRouter />
+        </div>
+        <div className="col">
+          <GetComponentRouter />
+
+          {/* <GetPageRouter /> */}
+        </div>
+      </div>
+      {/* <GetPageNav /> */}
+      {/* 
       {getAllComponentsNames()}
 
       {getComponents("Loader")}
-      {getPages("All")}
+      {getPages("All")} */}
     </div>
   );
 }

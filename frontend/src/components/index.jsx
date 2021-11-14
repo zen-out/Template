@@ -1,5 +1,6 @@
 import CardComponent from "./CardComponent/Card";
 import CardBody from "./CardComponent/CardBody";
+import ButtonComponent from "./ButtonComponent/ButtonComponent";
 import DrawerComponent from "./Navbar/DrawerComponent";
 import TableComponent from "./TableComponent/Table";
 import Playground from "../pages/PlaygroundPage/Playground";
@@ -12,10 +13,14 @@ import AllTimers from "./Timer/AllTimers";
 import Codepen from "./Codepen/Codepen";
 import CodeSandbox from "./Codepen/CodeSandbox";
 import CodepenItem from "./Codepen/CodepenItem";
-
+import BugCard from "./CardComponent/BugCard/BugCard";
+import IconPage from "./Icons/IconPage";
 export {
+  BugCard,
+  IconPage,
   CodepenItem,
   TimerComponent,
+  ButtonComponent,
   CodeSandbox,
   ToastComponent,
   Codepen,

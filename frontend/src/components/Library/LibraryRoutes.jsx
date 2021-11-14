@@ -5,5 +5,7 @@ function PageLayout(props) {
   return <div>{props.children}</div>;
 }
 export default function LibraryRoutes() {
-  return <Route element={<PageLayout />}></Route>;
+    return <Route element={ <PageLayout /> }>
+      
+  </Route>;
 }

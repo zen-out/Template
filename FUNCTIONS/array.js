@@ -63,3 +63,35 @@ console.log(inactiveUserIds);
 
 const unique = _.uniqBy(allUsers, "id");
 console.log(unique);
+
+let links = [
+  "https://codesandbox.io/s/react-suspense-esc8w",
+  "https://codepen.io/finnhvman/embed/bmNdNr",
+  "https://codepen.io/suez/embed/AXQaEg",
+  "https://react-beautiful-dnd.netlify.app/?path:/story/tables--with-custom-portal",
+  "https://codesandbox.io/s/ym97587kxx",
+  "https://codesandbox.io/s/react-grid-layout-d9n8q",
+  "https://codepen.io/sdras/embed/zYqvJqy",
+  "https://codepen.io/sdras/embed/xxZeRyg",
+  "https://codesandbox.io/s/9onoj",
+  "https://codepen.io/himalayasingh/embed/QZKqOX",
+];
+
+function createObjects(arr) {
+  let newArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    let newObj = {
+      link: arr[i],
+      title: "",
+      importance: "",
+      sparkJoy: false,
+      simple: false,
+    };
+    newArr.push(newObj);
+  }
+  return newArr;
+}
+
+console.log(createObjects(links));
+
+

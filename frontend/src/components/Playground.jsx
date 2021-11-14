@@ -4,7 +4,9 @@ import {
   CircularLoader,
   ActiveTimer,
   TimerComponent,
+  IconPage,
   Library,
+  BugCard,
   ToastComponent,
 } from "./index";
 import { ToastContainer, toast } from "react-toastify";
@@ -166,7 +168,6 @@ function RealTimer({ minutes }) {
 const Playground = () => {
   return (
     <div>
-      <h1>Timer omg need a break</h1>
       pure css: https://codepen.io/finnhvman/pen/bmNdNr
       <br />
       library
@@ -206,6 +207,7 @@ const Playground = () => {
       <TableComponent />
       <CardComponent />
       <TimerComponent />
+      <IconPage />
       {/* <ToastComponent /> */}
       {/* <ActiveTimer minutes={1} /> */}
     </div>

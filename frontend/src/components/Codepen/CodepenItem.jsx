@@ -4,14 +4,20 @@ import Codepen from "./Codepen";
 export default function CodepenItem({ object, link }) {
   return (
     <div className="App">
-      <h2>{object.title}</h2>
+      <h6>{object.title}</h6>
       <h4>{object.subtitle}</h4>
-      <h5>{object.component}</h5>
-
-      <h5>Reference? {object.reference}</h5>
-      <h5>Simple? {object.simple}</h5>
-      <h5>Spark Joy? {object.sparkJoy}</h5>
-
+      <h5>Component: {object.component}</h5>{" "}
+      {object.sparkJoy ? (
+        <span style={{ color: "blue" }}>Awesome</span>
+      ) : (
+        <span></span>
+      )}
+      {object.reference ? (
+        <span>Reference</span>
+      ) : (
+        <span></span>
+      )}
+      {object.simple ? <span>Simple</span> : <span></span>}
       {link.toLowerCase().includes("codesandbox") ? (
         <div>
           <CodeSandbox link={link} />

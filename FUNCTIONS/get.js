@@ -168,8 +168,7 @@ let tasksArr = [
   { id: 3, user_id: 1, feature_id: 2 },
   { id: 4, user_id: 1, feature_id: 2 },
 ];
-let bugsArr =
- [
+let bugsArr = [
   { id: 1, user_id: 1, task_id: 1 },
   { id: 2, user_id: 1, task_id: 2 },
 ];
