@@ -15,6 +15,8 @@ export const TasksStore = {
   current: INIT_TASKS[3],
   isLoading: false,
   setLoading: action((state, payload) => {
+
+      console.log("loading");
     state.isLoading = payload;
   }),
   toast: {

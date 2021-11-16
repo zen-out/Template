@@ -10,6 +10,7 @@ export const UsersStore = {
   isAuthenticated: false,
   isLoading: false,
   setLoading: action((state, payload) => {
+    console.log("loading");
     state.isLoading = payload;
   }),
   toast: {

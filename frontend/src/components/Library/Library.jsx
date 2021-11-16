@@ -29,6 +29,8 @@ export function FilterList({ pens }) {
       );
     });
   }
+
+ 
   console.log("type of code pen", typeof pens);
   return (
     <div>

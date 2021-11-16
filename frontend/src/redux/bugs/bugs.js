@@ -4,12 +4,12 @@ import produce from "immer";
 import { INIT_BUGS } from "./states";
 import mockService from "./server";
 import _ from "lodash";
-
 export const BugsStore = {
   bugs: INIT_BUGS,
   current: INIT_BUGS[3],
   isLoading: false,
   setLoading: action((state, payload) => {
+      console.log("loading")
     state.isLoading = payload;
   }),
   toast: {

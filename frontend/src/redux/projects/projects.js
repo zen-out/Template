@@ -10,6 +10,7 @@ export const ProjectsStore = {
   current: INIT_PROJECTS[3],
   isLoading: false,
   setLoading: action((state, payload) => {
+    console.log("loading");
     state.isLoading = payload;
   }),
   toast: {

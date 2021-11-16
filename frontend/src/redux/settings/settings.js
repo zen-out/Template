@@ -10,6 +10,8 @@ export const SettingsStore = {
   current: {},
   isLoading: false,
   setLoading: action((state, payload) => {
+
+      console.log("loading");
     state.isLoading = payload;
   }),
   toast: {

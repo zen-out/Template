@@ -10,6 +10,8 @@ export const FeaturesStore = {
   current: INIT_FEATURES[3],
   isLoading: false,
   setLoading: action((state, payload) => {
+
+      console.log("loading");
     state.isLoading = payload;
   }),
   toast: {
